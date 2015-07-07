@@ -202,9 +202,9 @@ queue([
   };
 {% endhighlight %}
 
+<a class="jsbin-embed" href="http://jsbin.com/AhirAlOV/5/embed?js,console">JS Bin on jsbin.com</a>
+<script src="http://static.jsbin.com/js/embed.min.js?3.31.0"></script>
+
 #### 翻译
 
 > [http://krasimirtsonev.com/blog/article/7-lines-JavaScript-library-for-calling-asynchronous-functions](http://krasimirtsonev.com/blog/article/7-lines-JavaScript-library-for-calling-asynchronous-functions)
-
-
-
