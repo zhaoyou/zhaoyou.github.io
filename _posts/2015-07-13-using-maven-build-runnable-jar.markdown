@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "7行Javascript代码的异步函数库!"
+title:  "使用maven构造可执行jar项目!"
 date:   2015-07-13 16:58:14
 categories: java maven
 ---
