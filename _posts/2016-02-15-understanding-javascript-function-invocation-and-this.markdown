@@ -23,16 +23,14 @@ categories: Javascript Function this
 3. 调用函数并且把thisValue设置到函数内部this， argList当做函数的参数列表。
 
 例如：
-{% codeblock %}
-{% raw %}
+{% highlight javascript %}
 
     function hello(thing) {
       console.log(this + " says hello " + thing);
     }
 
     hello.call("Yehuda", "world") //=> Yehuda says hello world
-{% endraw %}
-{% endcodeblock %}
+{% endhighlight %}
 
 
 在console运行代码，你就会发现this值被设置成了"Yehuda", 参数thing设置成立了"world", 这就是javascript函数原始的调用， 然后你再看看其他的调用方式， 只是在这个的基础上加上语法糖而已。[the ES5 spec]('http://es5.github.com/#x15.3.4.4')
@@ -43,8 +41,7 @@ categories: Javascript Function this
 
 很显然，每次调用函数都通过`call` 来调用会很烦， javascript允许我们直接使用`()`语法来调用函数, 当我们这样调用时， 实际上就像应用了下面的方式。
 
-{% codeblock %}
-{% raw %}
+{% highlight javascript %}
     function hello(thing) {
         console.log("Hello " + thing);
     }
@@ -54,22 +51,19 @@ categories: Javascript Function this
 
     // desugars to:
     hello.call(window, "world");
-{% endraw %}
-{% endcodeblock %}
+{% endhighlight %}
 
 
 当上面的代码在ECMAscript5 的严格模式下， 行为会不一样。
 
-{% codeblock %}
-{% raw %}
+{% highlight javascript %}
 
     // this:
     hello("world")
 
     // desugars to:
     hello.call(undefined, "world");
-{% endraw %}
-{% endcodeblock %}
+{% endhighlight %}
 
 
 上面的版本可以这样表示: 一个函数调用 `fn(...args)` 就像 `fn.call(window [ES5-strict: undefined], ...args)`
@@ -82,8 +76,7 @@ categories: Javascript Function this
 
 
 另一种比较常用的函数调用是作为对象方法的方式。`(person.hello())`, 像下面这种方式:
-{% codeblock %}
-{% raw %}
+{% highlight javascript %}
 
     var person = {
       name: "Brendan Eich",
@@ -97,13 +90,10 @@ categories: Javascript Function this
 
     // desugars to this:
     person.hello.call(person, "world");
-{% endraw %}
-{% endcodeblock %}
-
+{% endhighlight %}
 
 在这个例子中hello是作为person对象的一个方法， 而上一个示例中hello是作为独立的方法。 如果在程序执行过程， 动态指定方法到一个对象里，情况是怎样的呢？
-{% codeblock %}
-{% raw %}
+{% highlight javascript %}
 
 
     function hello(thing) {
@@ -116,8 +106,7 @@ categories: Javascript Function this
     person.hello("world") // still desugars to person.hello.call(person, "world")
 
     hello("world") // "[object DOMWindow]world"
-{% endraw %}
-{% endcodeblock %}
+{% endhighlight %}
 
 
 注意, 函数里面的this的值并不是总固定的，它的值总是依赖于当时函数调用者。
@@ -127,8 +116,7 @@ categories: Javascript Function this
 
 
 因为有时我们想函数里面`this`能保持不变。因此，人们在很久以前就使用闭包的方式来保持函数里面`this`的值不变。
-{% codeblock %}
-{% raw %}
+{% highlight javascript %}
 
     var person = {
       name: "Brendan Eich",
@@ -140,15 +128,14 @@ categories: Javascript Function this
     var boundHello = function(thing) { return person.hello.call(person, thing); }
 
     boundHello("world");
-{% endraw %}
-{% endcodeblock %}
+{% endhighlight %}
 
 
 尽管`boundHello`的调用方式转换为 `boundHello.call(window, "world")`, 但是在方法里面，我们通过闭包引用person，直接调用指定this值， 最终还是达到了我们的效果。
 
 我们还可以优化下上面的代码， 使的更通用。
-{% codeblock %}
-{% raw %}
+
+{% highlight javascript %}
 
     var bind = function(func, thisValue) {
       return function() {
@@ -158,8 +145,7 @@ categories: Javascript Function this
 
     var boundHello = bind(person.hello, person);
     boundHello("world") // "Brendan Eich says hello world"
-{% endraw %}
-{% endcodeblock %}
+{% endhighlight %}
 
 
 为了明白上面的代码， 你需要了解两点： 首先`arguments`是一个类似数组的对象，但并不是一个真正的数组， 代表代码函数执行时，传递过来的参数列表。 其次是`apply` 方法其实它和`call`方法十分的相似，唯一的区别就是，它只接收一个类数组对象的参数并不像`call`那样一个个参数传递。
@@ -167,18 +153,15 @@ categories: Javascript Function this
 这里`bind` 方法只是简单的返回一个函数。当我们返回的函数被调用时，原始的函数被调用，并且原始的thisValue设置成this值。 arguments 当作参数列表。
 
 由于这个方式普遍应用， ES5实现了这种行为, 并在Function原型上引进了这个`bind`方法
-{% codeblock %}
-{% raw %}
+{% highlight javascript %}
 
     var boundHello = person.hello.bind(person);
     boundHello("world") // "Brendan Eich says hello world"
-{% endraw %}
-{% endcodeblock %}
+{% endhighlight %}
 
 
 当你需要传递一个函数作为回调函数时，就特别有用。
-{% codeblock %}
-{% raw %}
+{% highlight javascript %}
 
     var person = {
         name: "Alex Russell",
@@ -188,8 +171,5 @@ categories: Javascript Function this
    $("#some-div").click(person.hello.bind(person));
 
     // when the div is clicked, "Alex Russell says hello world" is printed
-{% endraw %}
-{% endcodeblock %}
-
-
+{% endhighlight %}
 [英文原文]('http://yehudakatz.com/2011/08/11/understanding-javascript-function-invocation-and-this/')
