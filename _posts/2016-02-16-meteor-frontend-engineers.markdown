@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title: "meteor-frontend-engineers"
@@ -85,7 +84,7 @@ Reactivity是非常强大的也十分神奇。 所以有时候在使用时，可
 下面是2个 [Microscope](https://github.com/DiscoverMeteor/Microscope)的模板(列出用户通知）的代码。
 注意：如果你想知道， [Microscope](https://github.com/DiscoverMeteor/Microscope) 是我们开发的新闻应用程序。
 
-{% highlight %}
+{% highlight javascript %}
 <template name="notifications">
   <ul class="notification">
     {{#if notificationCount}}
@@ -109,7 +108,7 @@ Reactivity是非常强大的也十分神奇。 所以有时候在使用时，可
 
 而这里是这些模块对应的Javascript代码：
 
-{% highlight %}
+{% highlight javascript %}
   Template.notifications.helpers({
     notifications: function() {
      return Notifications.find({userId: Meteor.userId(), read: false});

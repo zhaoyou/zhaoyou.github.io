@@ -3,7 +3,7 @@ layout: post
 title: "理解Javascript函数调用和函数内部This引用"
 date: 2016-02-15 14:33:07 +0800
 comments: true
-categories: Javascript Function translation
+categories: Javascript Function this
 ---
 
 一直以来， 我对Javascript函数调用都很困惑， 不仅仅是函数调用， 很多人都抱怨函数内部的`this`引用也混乱。
