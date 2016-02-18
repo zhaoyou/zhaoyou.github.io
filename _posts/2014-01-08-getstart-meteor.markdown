@@ -24,7 +24,7 @@ categories: meteor
 
 * 本地运行
 
-{% highlight %}
+{% highlight bash%}
 $ cd myapp
 $ meteor
   => Meteor server running on: http://localhost:3000/
