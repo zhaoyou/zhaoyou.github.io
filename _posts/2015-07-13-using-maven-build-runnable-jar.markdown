@@ -9,7 +9,8 @@ categories: java maven
 
 __目标__
 
-- 使用SpringMVC和内嵌Jetty
+- 使用SpringMVC和内嵌Jetty打包成一个可执行jar文件。配置文件单独拷贝出来。
+- 通过启动命令参数，指定程序加载特定的环境配置文件(develop或者production)。暂未实现
 
 
 #### pom.xml 文件的build关键部分。
