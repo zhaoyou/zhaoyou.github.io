@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Getstart Meteor Development"
+title: "getstart Meteor Development"
 date: 2014-01-08 00:00:04 +0800
 comments: true
 categories: meteor
