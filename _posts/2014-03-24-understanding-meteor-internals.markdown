@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Understanding-Meteor-Internals"
+title: "understanding-Meteor-Internals"
 date: 2014-03-24 13:47:34 +0800
 comments: true
 categories: meteor
@@ -11,7 +11,7 @@ categories: meteor
 
 Meteor程序，看上去就像典型的web程序一样,由浏览器，代理服务器，路由，和其他网络组件构成。事实上Meteor由两个主要的部分构成。 一部分运行在服务端,另一部分运行在客户端。 这两部分相互通信的方式就像现代Web程序一样(例如： Gmail，Trello)。
 
-![internal](/images/posts/internal_1.png)
+![internal](/images/internal_1.png)
 
 Meteor 的这种方式， 使得开发人员无需再担心客户端与服务端之间复杂的通信， 只关注自己的业务逻辑。
 
