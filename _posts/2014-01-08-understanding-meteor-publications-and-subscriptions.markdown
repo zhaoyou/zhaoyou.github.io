@@ -1,0 +1,139 @@
+---
+layout: post
+title: "understanding Meteor Publications & Subscriptions"
+date: 2014-01-08 14:43:00 +0800
+comments: true
+categories: meteor
+---
+
+Meteor 处理应用数据的方式是这个框架最有价值的地方，也是使用它最困难的地方之一，尤其在刚开始时候。
+
+因此造成了很多的误解.例如，它的应用是不安全的，也不能处理大数据.
+
+今天，我花点时间来澄清这些误解，介绍Meteor的 `Publications` 和  `` Subscriptions ``
+
+
+### 以前的方式
+***
+开始前， 我们回顾下2011年之前Meteor还没有出现，你创建了一个简单的Rails 应用程序.当用户访问你的站点，浏览器发送一个请求给应用程序，其他的操作就全部在服务端了。
+
+应用程序的第一个工作就是找到用户所需的数据。这可能是是12条搜索记录; 或者小明的个人信息;或者是小Q的最新动态等等
+
+你可简单的认为就是书店店员从书架上找到你想要的书。
+
+![Mou icon](/images/understaning_1.jpg)
+      想象下这个就是一个大的数据库
+
+
+一旦拿到你想要的数据，应用程序第二个步骤就是把这些数据转换成我们熟悉的HTML(或者是json数据结构)
+
+以书店作比喻，就像店员把书拿出来，然后包装起来放到一个漂亮的袋子里面，这就是经典的MVC模式中的视图部分。
+
+最后应用程序把html代码发送给到浏览器，然后就悠然自得的等待下一个请求。
+
+### Meteor 的方式
+***
+
+Meteor 最关键的创新在于不像Rails应用程序只在服务端运行。Meteor应用还包括客户端组件, 并运行在客户端（用户浏览器）.
+ 
+就像是一个商店职员不但帮你找到了你要的书，还和你回家晚上陪你一起阅读（听起来是不是有点毛骨悚然）。
+
+就是这种架构使Meteor做了很多很酷的东西，其中最主要的就是Meteor所谓的[database everywhere](http://docs.meteor.com/#sevenprinciples),简单来说就是Meteor会拷贝你数据库中的一个子集复制到客户端.
+
+![data set](/images/understaning_2.png)
+      Pushing a subset of the database to the client.
+
+
+其实这有两层重大的含义，首先不是发送HTML code到客户端, Meteor应用程序而是发送实际的原始数据到客户端，让客户端去处理这些数据([data on the wire](http://docs.meteor.com/#sevenprinciples)).
+
+其次，你将马上访问到数据而无需等待服务器的返回。更酷的是你不要担心客户端与服务端的数据同步([latency compensation](http://docs.meteor.com/#sevenprinciples))
+
+### 管理数据
+***
+
+我们的应用程序可能包含成千上万的数据， 有些可能是一些私密和敏感的数据。基于安全性和程序扩展性考虑， 我们不可能把整个数据库镜像都复制到客户端去。
+
+所以如何告诉Meteor应该把哪些数据集发送到客户端去呢？
+
+让我们忘记上面书店的比喻，看看下面的图表。
+
+首先下面的数据存储在数据库里。想象下我们正在建立某种论坛，下面的文档就像是用户提交的帖子一样。
+![database](/images/understaning_3.png)
+      All the posts contained in our database.
+
+### Publishing
+****
+
+有些帖子因为不文明而被特别标注出来，虽然这些仍然存在我们的数据库中，但是我们不应该发送到客户端去。
+
+所以，首先告诉Meteor哪些数据我们需要发送到客户端,那些没有被标注的帖子。
+![database](/images/understaning_4.png)
+      Excluding flagged posts.
+
+下面是对应的代码, 运行在服务端。
+{% highlight javascript %}
+// on the server
+Meteor.publish('posts', function() {
+    return Posts.find({flagged: false});
+});
+{% endhighlight %}
+
+这将确保客户端不能访问已经标注出来的帖子。
+
+确保我们Meteor应用程序安全，就是确保你发布到客户端数据的访问。
+
+
+#### 更灵活的控制
+
+如果我们希望系统管理员能够查看被标注的帖子
+
+很简单，假定我们定义了一个``isAdmin()``函数来根据用户Id检查是否有权限。像下面这样做：
+{% highlight javascript %}
+// on the server
+Meteor.publish('posts', function() {
+    if(isAdmin(this.userId)){
+        return Posts.find();
+    }else{
+      return Posts.find({flagged: false});
+    }
+});
+{% endhighlight %}
+
+
+### Subscribing
+***
+
+即使我们想要任何未标识的帖子发送到客户端，但也不能一次把所有的帖子发过去。我们需要一种方式，只发送客户端需要的数据。 这时subscriptions派上用场了。
+
+任何订阅的数据都会在本地客户端存一份镜像, 靠的就是 _MiniMongo_ ,  它是Meteor的Mongo客户端实现。
+
+例如让我们想象下，目前我们正在浏览Smith的个人信息页面，只显示他相关的帖子。
+
+
+![database](/images/understaning_5.png)
+      Subscribing to Smith’s posts will mirror them on the client.
+
+首先我们需要在publication的地方添加一个参数
+{% highlight %}
+// on the server
+Meteor.publish('posts', function(author) {
+    return Posts.find({flagged: false, author: author});
+});
+{% endhighlight %}
+
+我们在客户端订阅程序代码的地方应该添加一个参数。
+
+{% highlight %}
+// on the client
+Meteor.subscribe('posts', 'bob-smith');
+{% endhighlight %}
+
+这就是怎样在客户端扩展你的Meteor程序，并不是订阅所有的数据。而是选择你当前需要的数据。这样我们可以避免因为数据库大量的数据，而造成浏览器占用大量的内存。
+
+> ``Autopublish``
+  如果你已经玩过Meteor应用程序， 你可能会迷惑，我根本没有设置什么订阅和发布，为啥我的程序正常工作了。
+  默认新建的Meteor程序包含了 ``autopublish`` 模块。发布和订阅了所有的数据，不需要你担心了。
+  如果一旦你打算在生产环境部署应用了， 就应该把它移除掉。
+
+
+
