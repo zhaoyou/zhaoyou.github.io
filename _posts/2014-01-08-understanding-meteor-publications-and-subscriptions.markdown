@@ -114,7 +114,7 @@ Meteor.publish('posts', function() {
       Subscribing to Smith’s posts will mirror them on the client.
 
 首先我们需要在publication的地方添加一个参数
-{% highlight %}
+{% highlight javascript %}
 // on the server
 Meteor.publish('posts', function(author) {
     return Posts.find({flagged: false, author: author});
@@ -123,7 +123,7 @@ Meteor.publish('posts', function(author) {
 
 我们在客户端订阅程序代码的地方应该添加一个参数。
 
-{% highlight %}
+{% highlight javascript%}
 // on the client
 Meteor.subscribe('posts', 'bob-smith');
 {% endhighlight %}
