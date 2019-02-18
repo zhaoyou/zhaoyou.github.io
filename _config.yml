@@ -1,11 +1,11 @@
 # Site settings
 title: zhao you 的博客
-email: zhaoyou.xt@gmail.com
+email: zhaoyou.xt#gmail.com （@代替#）
 description: > # this means to ignore newlines until "baseurl:"
   这是最好的时代，这也是最坏的时代！
 baseurl: "" # the subpath of your site, e.g. /blog/
 url: "http://zhaoyou.github.io" # the base hostname & protocol for your site
-twitter_username: hadeser7
+twitter_username: iamzhaoyou
 github_username:  zhaoyou
 
 # Build settings
