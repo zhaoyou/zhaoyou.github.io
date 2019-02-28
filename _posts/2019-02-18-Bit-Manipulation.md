@@ -26,7 +26,7 @@ Java 中常用的几个位操作
 
 
 
-- 按位与 （AND）`&` 
+- 按位与 （AND）`&`
 
 ```shell
 0&0 = 0
@@ -59,7 +59,7 @@ Java 中常用的几个位操作
 > 对应每一个比特位操作，1变成0，0变成1.
 > 对任一数值 x 进行按位非操作的结果为 -(x + 1)。例如，~5 结果为 -6。
 
-- 按位异或 `^` 
+- 按位异或 `^`
 
 ```shell
 0 ^ 1 = 1
@@ -77,7 +77,7 @@ Java 中常用的几个位操作
 - 判断一个数是否是偶数。判断这个数X按位`&`1 如果结果为0，则是偶数，否则为奇数
 
 ```shell
-X & 1 == 0 
+X & 1 == 0
 
 xxxx xxx0
 0000 0001
@@ -109,3 +109,4 @@ xxxx xxx1
 > [Bitwise operation - Wikipedia](https://zh.wikipedia.org/wiki/%E4%BD%8D%E6%93%8D%E4%BD%9C)
 
 > [https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Bitwise_Operators#Summary](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Bitwise_Operators#Summary)
+> [https://leetcode.com/problems/sum-of-two-integers/discuss/84278/A-summary:-how-to-use-bit-manipulation-to-solve-problems-easily-and-efficiently](https://leetcode.com/problems/sum-of-two-integers/discuss/84278/A-summary:-how-to-use-bit-manipulation-to-solve-problems-easily-and-efficiently)
